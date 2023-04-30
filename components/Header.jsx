@@ -16,27 +16,27 @@ const Header = () => {
   const { user, setUser } = useAuth();
 
   return (
-    <header className="flex items-center px-2 py-1 shadow-md sticky top-0">
+    <header className="flex items-center px-2 py-1 shadow-md sticky top-0 w-screen">
       <div className="w-[150px] h-16 relative cursor-pointer flex-shrink-0">
         <Image src={"/assets/reddit.png"} fill objectFit="contain" />
       </div>
 
-      <div className="flex items-center ml-5">
+      <div className="flex items-center ">
         <HomeIcon className="h-6 cursor-pointer" />
         <p className="ml-1 hidden lg:block lg:w-[200px]">Home</p>
         <ChevronDownIcon className="h-6 cursor-pointer" />
       </div>
 
-      <form className="flex items-center flex-1 border ml-7 border-gray-200 py-2 px-4 bg-gray-100 rounded-sm ">
+      <form className=" items-center flex-1 hidden sm:flex  border ml-7 border-gray-200 py-2 px-4 bg-gray-100 rounded-sm ">
         <MagnifyingGlassIcon className="h-6 cursor-pointer" />
         <input
           type="text"
           placeholder="search"
-          className="bg-transparent flex-1 outline-none px-3"
+          className="bg-transparent flex-1 outline-none w-28  px-3"
         />
       </form>
 
-      <div className="lg:flex mx-5 items-center gap-8 hidden ">
+      <div className="lg:flex mx-5 items-center gap-5 hidden ">
         <SparklesIcon className="icon" />
         <GlobeAltIcon className="icon" />
         <VideoCameraIcon className="icon" />
@@ -45,16 +45,16 @@ const Header = () => {
         <BellIcon className="icon" />
         <PlusIcon className="icon" />
       </div>
-      <div className="lg:hidden ml-5">
-        <Bars3Icon className="icon" />
+      <div className="lg:hidden  ml-auto">
+        <Bars3Icon className="cursor-pointer h-6 text-black" />
       </div>
-      <div className="flex gap-1 items-center px-4">
+      <div className="flex gap-1 items-center px-1 ">
         {user && (
           <>
             <Image
               src={user.image}
-              width={50}
-              height={50}
+              width={30}
+              height={30}
               className="rounded-full"
             />
             <button
