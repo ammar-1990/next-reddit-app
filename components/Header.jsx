@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <header className="flex items-center px-2 py-1 shadow-md sticky top-0 w-screen bg-white">
       <div className="w-[100px] h-16 relative cursor-pointer flex-shrink-0">
-        <Image src={"/assets/reddit.png"} fill objectFit="contain" />
+        <Image src={"/assets/reddit.png"} fill objectFit="contain" alt="logo"/>
       </div>
 
       <div className="flex items-center ml-5">
@@ -56,6 +56,7 @@ const Header = () => {
               width={30}
               height={30}
               className="rounded-full"
+              alt="profile"
             />
             <div className="flex items-center gap-2 ml-2">
             <div
