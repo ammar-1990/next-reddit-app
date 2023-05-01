@@ -16,18 +16,18 @@ const Header = () => {
   const { user, setUser } = useAuth();
 
   return (
-    <header className="flex items-center px-2 py-1 shadow-md sticky top-0 w-screen">
-      <div className="w-[150px] h-16 relative cursor-pointer flex-shrink-0">
+    <header className="flex items-center px-2 py-1 shadow-md sticky top-0 w-screen bg-white">
+      <div className="w-[100px] h-16 relative cursor-pointer flex-shrink-0">
         <Image src={"/assets/reddit.png"} fill objectFit="contain" />
       </div>
 
-      <div className="flex items-center ">
+      <div className="flex items-center ml-5">
         <HomeIcon className="h-6 cursor-pointer" />
-        <p className="ml-1 hidden lg:block lg:w-[200px]">Home</p>
+        <p className="ml-1 hidden lg:block lg:w-[200px] px-4">Home</p>
         <ChevronDownIcon className="h-6 cursor-pointer" />
       </div>
 
-      <form className=" items-center flex-1 hidden sm:flex  border ml-7 border-gray-200 py-2 px-4 bg-gray-100 rounded-sm ">
+      <form className=" items-center flex-1 mr-2 hidden sm:flex  border ml-7 border-gray-200 py-2 px-4 bg-gray-100 rounded-sm ">
         <MagnifyingGlassIcon className="h-6 cursor-pointer" />
         <input
           type="text"
@@ -50,26 +50,30 @@ const Header = () => {
       </div>
       <div className="flex gap-1 items-center px-1 ">
         {user && (
-          <>
+          <div className="flex gap-1 items-center cursor-pointer" onClick={()=>setUser(null)}>
             <Image
               src={user.image}
               width={30}
               height={30}
               className="rounded-full"
             />
-            <button
-              onClick={() => setUser(null)}
-              className="text-gray-400 text-lg"
+            <div className="flex items-center gap-2 ml-2">
+            <div
+            
+              className="text-gray-400 text-sm flex flex-col "
             >
-              Logout
-            </button>
-          </>
+             <p className="text-black font-semibold">{user.name}</p>
+             <p className="flex items-center gap-1">{user.karma}  </p>
+            </div>
+            <ChevronDownIcon className="h-4 text-gray-400 "/>
+            </div>
+          </div>
         )}
 
         {!user && (
           <button
-            onClick={() => setUser({ name: "Alext", image:'/assets/profile.png' })}
-            className="text-gray-400 text-lg"
+            onClick={() => setUser({ name: "Alext", image:'/assets/profile.png',karma:'karma 1' })}
+            className="text-gray-400 text-sm"
           >
             Login
           </button>
