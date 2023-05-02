@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 
 useAuth;
 
-const Post = () => {
+const Post = ({mySubreddit}) => {
   const { user } = useAuth();
   const {
     register,
@@ -21,19 +21,20 @@ const Post = () => {
   const [image, setImage] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
+    const notification = toast.loading("Creating a new post");
     try {
-      const notification = toast.loading("Creating a new post");
+     
       const { data: subreddit, error } = await supabase
         .from("subreddit")
         .select("*")
-        .eq("topic", data.subreddit);
-      console.log(subreddit);
+        .eq("topic",mySubreddit|| data.subreddit);
+      console.log(subreddit,mySubreddit);
 
       const subredditExist = subreddit.length > 0;
       if (!subredditExist) {
         const { data: newSubreddit, error: newSubredditError } = await supabase
           .from("subreddit")
-          .insert({ topic: data.subreddit });
+          .insert({ topic:mySubreddit|| data.subreddit });
 
         if (newSubredditError) {
           console.log("Error creating subreddit:", newSubredditError.message);
@@ -43,7 +44,7 @@ const Post = () => {
           const { data: createdSubreddit, createdError } = await supabase
             .from("subreddit")
             .select("*")
-            .eq("topic", data.subreddit);
+            .eq("topic",mySubreddit || data.subreddit);
           console.log(createdSubreddit);
           const { data: post, error: postError } = await supabase
             .from("post")
@@ -93,7 +94,7 @@ const Post = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="sticky top-16 z-50 bg-white p-2 border border-x-gray-300 rounded-md"
+      className="sticky top-20 z-50 bg-white p-2 border border-x-gray-300 rounded-md"
     >
       <div className="flex items-center gap-3 w-full">
         <Avatar />
@@ -101,8 +102,8 @@ const Post = () => {
           {...register("postTitle", { required: "A Post Title is required" })}
           type="text"
           placeholder={
-            user
-              ? "Create a post buy entering a title"
+            user? 
+            mySubreddit ?`write a post about r/${mySubreddit}`  : "Create a post buy entering a title"
               : "Sign in to create a post"
           }
           disabled={!user}
@@ -130,7 +131,7 @@ const Post = () => {
               placeholder="Text (Optional)"
             />
           </div>
-          <div className="flex items-center m-2">
+        {  !mySubreddit&&<div className="flex items-center m-2">
             <p className="min-w-[90px]">Subreddit:</p>
             <input
               type="text"
@@ -140,7 +141,7 @@ const Post = () => {
               })}
               placeholder="i.e. Nextjs"
             />
-          </div>
+          </div>}
           {image && (
             <div className="flex items-center m-2">
               <p className="min-w-[90px]">Image URL:</p>

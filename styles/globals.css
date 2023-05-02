@@ -3,7 +3,16 @@
 @tailwind utilities;
 
 
-
 .icon {
   @apply text-gray-400 cursor-pointer h-6
 }
+
+
+.iconButton{
+@apply h-6
+}
+
+.iconBox {
+  @apply hover:bg-gray-100 font-semibold cursor-pointer flex gap-1 items-center text-gray-400 p-2 text-sm rounded-sm
+}
+

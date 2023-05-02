@@ -4,11 +4,11 @@ import '@/styles/globals.css'
 import { Toaster } from 'react-hot-toast'
 
 export default function App({ Component, pageProps }) {
-  return  <AuthContextProvider>
-    <div className='h-screen bg-slate-200'>
+  return  <div className=' bg-gray-100 h-screen overflow-y-scroll'><AuthContextProvider>
       <Toaster />
+ 
       <Header />
     <Component {...pageProps} />
-    </div>
-    </AuthContextProvider>
+    
+    </AuthContextProvider></div>
 }
