@@ -33,7 +33,7 @@ export async function  getServerSideProps(){
 
 
  const { data, error } = await supabase
-  .from('subreddit')
+  .from('post')
   .select()
 
 
