@@ -27,7 +27,7 @@ const Header = () => {
         <ChevronDownIcon className="h-6 cursor-pointer" />
       </div>
 
-      <form className=" items-center flex-1 mr-2 hidden sm:flex  border ml-7 border-gray-200 py-2 px-4 bg-gray-100 rounded-sm ">
+      <form className=" items-center flex-1 mr-2 hidden sm:flex  border ml-7 border-gray-200 py-2 px-4 bg-gray-100 rounded-sm hover:border-blue-400 ">
         <MagnifyingGlassIcon className="h-6 cursor-pointer" />
         <input
           type="text"

@@ -2,18 +2,37 @@ import React from 'react'
 import PostArticle from './PostArticle'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
+import { useRouter } from 'next/router'
+import subreddit from '@/pages/subreddit/[topic]'
 
-const Feed = () => {
+const Feed = ({theId}) => {
+
     const [posts,setPosts]=useState([])
+   
 
-    useEffect(()=>{
+    const fetchPosts = async ()=>{
 
-  const fetchPosts = async ()=>{
-    const { data, error } = await supabase
-    .from('post')
-    .select().order('created_at', { ascending: false })
-    setPosts(data)
-  }
+     
+            
+        const { data, error } = await supabase
+        .from('post')
+        .select().order('created_at', { ascending: false })
+        setPosts(!theId ? data : data.filter(el=>el.subreddit_id === theId))
+        
+      
+     
+    
+    
+    
+    }
+
+
+
+useEffect(()=>{
+      
+
+
+
 
   fetchPosts()
 
@@ -26,13 +45,21 @@ const Feed = () => {
               schema: 'public',
               table: 'post',
             },
-            (payload) => {setPosts(posts=>[payload.new,...posts]) }
+            (payload) => { 
+                
+                
+                setPosts(posts=>!theId ? [payload.new,...posts] :  [payload.new,...posts].filter(el=>el.subreddit_id === theId)) }
           )
           .subscribe()
         
         
         
         },[])
+
+
+if(theId==='') 
+return <div>no such subreddit</div>
+      
   return (
     <div className='mt-5 space-y-4 max-w-screen overflow-hidden '>
 

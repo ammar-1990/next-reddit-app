@@ -9,12 +9,14 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import Avatar from './Avatar'
 import Moment from 'react-moment';
+import { useRouter } from 'next/router'
 
 
 
 const PostArticle = ({id,title,body,image,subreddit_id,username,created_at}) => {
     const [subreddit, setSubreddit] = useState(null)
     const [comments, setComments] = useState(null)
+
     useEffect(()=>{
 const fetchSubreddit = async(id)=>{
 
@@ -53,8 +55,10 @@ fetchComments(id)
 
 
     },[])
+
+    const router = useRouter()
   return (
-    <article className='bg-white flex rounded-md cursor-pointer border  border-gray-300 shadow-sm hover:border-gray-600'>
+    <article onClick={()=>router.push(`/subreddit/${subreddit?.topic}`)} className='bg-white flex rounded-md cursor-pointer border  border-gray-300 shadow-sm hover:border-gray-600'>
         
 
         <section className='bg-gray-100 rounded-l-md flex flex-col items-center justify-start p-4 text-gray-400   space-y-1'>

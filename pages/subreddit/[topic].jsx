@@ -2,10 +2,14 @@ import Avatar from "@/components/Avatar"
 import Feed from "@/components/Feed"
 import Post from "@/components/Post"
 import { useRouter } from "next/router"
+import { useState } from "react"
+import { supabase } from "@/lib/supabaseClient"
 
-const subreddit = () => {
+const subreddit = ({id}) => {
 
     const {query:{topic}} = useRouter()
+
+console.log(id)
 
   return (
     <div>
@@ -23,7 +27,7 @@ const subreddit = () => {
 
     <div className="mt-5 max-w-5xl mx-auto">
         <Post mySubreddit={topic}/>
-        <Feed />
+        <Feed theId={id} />
     </div>
 </div>
 
@@ -32,3 +36,34 @@ const subreddit = () => {
 }
 
 export default subreddit
+
+
+export async function getServerSideProps({params:{topic}}){
+console.log(topic)
+
+const { data, error } = await supabase
+  .from('subreddit')
+  .select('*')
+  .eq('topic',topic)
+  .single()
+
+  if(!data)
+  return {props:{
+    id:''
+  }}
+
+
+  const { data:post, error:postError } = await supabase
+  .from('post')
+  .select('*')
+  .eq('subreddit_id',data.id)
+
+
+
+
+
+
+    return {
+        props:{id:data.id}
+    }
+}
