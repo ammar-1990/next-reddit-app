@@ -11,13 +11,14 @@ import { BellIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/contexts/Auth";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const { user, setUser } = useAuth();
-
+const router = useRouter()
   return (
     <header className="flex items-center px-2 py-1 shadow-md sticky top-0 w-full bg-white z-50">
-      <div className="w-[100px] h-16 relative cursor-pointer flex-shrink-0">
+      <div onClick={()=>router.push('/')} className="w-[100px] h-16 relative cursor-pointer flex-shrink-0">
         <Image src={"/assets/reddit.png"} fill objectFit="contain" alt="logo"/>
       </div>
 
