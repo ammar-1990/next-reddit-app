@@ -42,7 +42,18 @@ console.log(comment)
     fetchAll();
 
 
-    const channel = supabase
+  
+
+
+
+
+  }, []);
+
+
+
+  useEffect(()=>{
+
+    const channel2 = supabase
     .channel('table-db-changes')
     .on(
       'postgres_changes',
@@ -52,17 +63,13 @@ console.log(comment)
         table: 'comment',
       },
       (payload) => { 
-          
+        console.log(payload)
           
           setComments(comments=>[payload.new,...comments]) 
-        console.log(payload.new)}
+       }
     )
     .subscribe()
-
-
-
-
-  }, []);
+  },[])
 
 
   const {

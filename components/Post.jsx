@@ -28,7 +28,7 @@ const Post = ({mySubreddit}) => {
         .from("subreddit")
         .select("*")
         .eq("topic",mySubreddit|| data.subreddit);
-      console.log(subreddit,mySubreddit);
+    
 
       const subredditExist = subreddit.length > 0;
       if (!subredditExist) {
@@ -39,13 +39,13 @@ const Post = ({mySubreddit}) => {
         if (newSubredditError) {
           console.log("Error creating subreddit:", newSubredditError.message);
         } else {
-          console.log("subreddit created:", newSubreddit);
+     
           const image = data.postImage || "";
           const { data: createdSubreddit, createdError } = await supabase
             .from("subreddit")
             .select("*")
             .eq("topic",mySubreddit || data.subreddit);
-          console.log(createdSubreddit);
+       
           const { data: post, error: postError } = await supabase
             .from("post")
             .insert({
@@ -58,7 +58,7 @@ const Post = ({mySubreddit}) => {
           if (postError) {
             console.log("Error creating post:", postError.message);
           } else {
-            console.log("Post created with new subreddit: ", post);
+         
           }
         }
       } else {
@@ -75,7 +75,7 @@ const Post = ({mySubreddit}) => {
         if (postError) {
           console.log("Error creating post:", postError.message);
         } else {
-          console.log("Post created:with existing subreddit", post);
+     
         }
       }
 

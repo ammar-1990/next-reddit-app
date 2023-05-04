@@ -36,7 +36,17 @@ useEffect(()=>{
 
   fetchPosts()
 
-        const channel = supabase
+     
+        
+        
+        
+        },[])
+
+
+
+        useEffect(()=>{
+
+          const channel1 = supabase
           .channel('table-db-changes')
           .on(
             'postgres_changes',
@@ -46,14 +56,13 @@ useEffect(()=>{
               table: 'post',
             },
             (payload) => { 
-                
+                console.log(payload)
                 
                 setPosts(posts=>!theId ? [payload.new,...posts] :  [payload.new,...posts].filter(el=>el.subreddit_id === theId)) }
           )
           .subscribe()
-        
-        
-        
+
+
         },[])
 
 
@@ -61,7 +70,7 @@ if(theId==='')
 return <div>no such subreddit</div>
       
   return (
-    <div className='mt-5 flex flex-col gap-5 max-w-screen overflow-hidden '>
+    <div className='mt-5 flex flex-col gap-5 max-w-screen overflow-hidden flex-1'>
 
 {posts?.map(el=><PostArticle key={el.id} {...el} />)}
 

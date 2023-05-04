@@ -62,8 +62,11 @@ const fetchVotes = async(id)=>{
   .from('vote')
   .select('*')
   .eq('post_id', id)
-  console.log('vote',vote)
+  .order('created_at', { ascending: false })
+
   setVotes(vote)
+
+
 }
 
 
@@ -73,7 +76,7 @@ fetchComments(id)
 fetchVotes(id)
 
 
-const channel = supabase
+const channel3 = supabase
 .channel('table-db-changes')
 .on(
   'postgres_changes',
@@ -84,7 +87,7 @@ const channel = supabase
   },
   (payload) => { 
       
-      
+
       setVotes(votes=>  [payload.new,...votes]) }
 )
 .subscribe()
@@ -100,7 +103,7 @@ setVote(theVote)
 
 
 
-},[votes])
+},[votes,user])
 
 
 
@@ -112,13 +115,14 @@ setVote(theVote)
 
 
     const voting = async (isVoting)=>{
+  
       if(!user)
       {toast.error('please sign in to vote')}
     else  
     {  if(vote && isVoting )
-      toast.error('already voted')
+     return
      else if(vote === false && !isVoting)
-      toast.error('already voted')
+     return
 
      else{ const { data: insertedVote, error } = await supabase
       .from('vote')
@@ -127,10 +131,25 @@ setVote(theVote)
         upvote: isVoting,
         post_id: id
       })
-      console.log(insertedVote)}}
+     
+    }}
 
       
       
+      }
+
+
+
+      const displayNumber = (votes)=>{
+        const number = votes?.reduce((total,el)=>el.upvote? total+=1 : total-=1,0)
+if(votes?.length===0)
+return 0
+else if(number===0)
+return votes[0].upvote ? 1 : -1
+else
+return number
+
+
       }
 
 
@@ -145,9 +164,9 @@ setVote(theVote)
 
         <section className='bg-gray-50 rounded-l-md flex flex-col items-center justify-start p-4 text-gray-400   space-y-1'>
        
-        <ArrowUpIcon onClick={()=>voting(true)} className='iconButton hover:text-red-400'/>
-<p className='font-bold text-black text-xs'>0</p>
-<ArrowDownIcon onClick={()=>voting(false)} className='iconButton hover:text-blue-400'/>
+        <ArrowUpIcon onClick={(e)=>voting(true)} className={`iconButton hover:text-red-400 ${vote && 'text-red-400'}`}/>
+<p className='font-bold text-black text-xs'>{displayNumber(votes)}</p>
+<ArrowDownIcon onClick={(e)=>voting(false)} className={`iconButton hover:text-blue-400 ${vote ===false && 'text-blue-400'}`}/>
       
         </section>
         <section className='p-3 pb-1 flex-1 overflow-hidden'>
