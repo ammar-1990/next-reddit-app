@@ -24,12 +24,12 @@ console.log(id)
         </div>
     </div>
     </div>
-
+    </div>
     <div className="mt-5 max-w-5xl mx-auto pb-5">
         <Post mySubreddit={topic}/>
         <Feed theId={id} />
     </div>
-</div>
+
 
     </div>
   )

@@ -12,12 +12,17 @@ import Moment from 'react-moment';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import {Jelly} from '@uiball/loaders'
+import { useAuth } from '@/contexts/Auth'
+import { toast } from 'react-hot-toast'
 
 
 
 const PostArticle = ({id,title,body,image,subreddit_id,username,created_at,commentNum}) => {
     const [subreddit, setSubreddit] = useState(null)
     const [comments, setComments] = useState(null)
+    const {user} = useAuth()
+    const [votes, setVotes] = useState(null)
+    const [vote,setVote] = useState()
 
     useEffect(()=>{
 const fetchSubreddit = async(id)=>{
@@ -51,14 +56,82 @@ const fetchComments = async (id)=>{
   }
 }
 
+
+const fetchVotes = async(id)=>{
+  const { data: vote, error } = await supabase
+  .from('vote')
+  .select('*')
+  .eq('post_id', id)
+  console.log('vote',vote)
+  setVotes(vote)
+}
+
+
+
 fetchSubreddit(subreddit_id)
 fetchComments(id)
+fetchVotes(id)
 
+
+const channel = supabase
+.channel('table-db-changes')
+.on(
+  'postgres_changes',
+  {
+    event: '*',
+    schema: 'public',
+    table: 'vote',
+  },
+  (payload) => { 
+      
+      
+      setVotes(votes=>  [payload.new,...votes]) }
+)
+.subscribe()
 
 
     },[])
 
+useEffect(()=>{
+
+const theVote = votes?.find((el)=>el.username === user?.name)?.upvote
+setVote(theVote)
+
+
+
+
+},[votes])
+
+
+
+
+
+
+
     const router = useRouter()
+
+
+    const voting = async (isVoting)=>{
+      if(!user)
+      {toast.error('please sign in to vote')}
+    else  
+    {  if(vote && isVoting )
+      toast.error('already voted')
+     else if(vote === false && !isVoting)
+      toast.error('already voted')
+
+     else{ const { data: insertedVote, error } = await supabase
+      .from('vote')
+      .insert({
+        username: user?.name,
+        upvote: isVoting,
+        post_id: id
+      })
+      console.log(insertedVote)}}
+
+      
+      
+      }
 
 
     if(!subreddit || !id)
@@ -72,9 +145,9 @@ fetchComments(id)
 
         <section className='bg-gray-50 rounded-l-md flex flex-col items-center justify-start p-4 text-gray-400   space-y-1'>
        
-        <ArrowUpIcon className='iconButton hover:text-red-400'/>
+        <ArrowUpIcon onClick={()=>voting(true)} className='iconButton hover:text-red-400'/>
 <p className='font-bold text-black text-xs'>0</p>
-<ArrowDownIcon className='iconButton hover:text-blue-400'/>
+<ArrowDownIcon onClick={()=>voting(false)} className='iconButton hover:text-blue-400'/>
       
         </section>
         <section className='p-3 pb-1 flex-1 overflow-hidden'>

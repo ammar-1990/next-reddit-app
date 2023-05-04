@@ -13,6 +13,7 @@ const post = ({ id }) => {
   const [post, setPost] = useState(null);
   const [comments,setComments]=useState(null)
 
+
   const {user} = useAuth()
 
   useEffect(() => {
@@ -103,12 +104,16 @@ catch(err){
 
 
 
+
+
+
  if(!comments) 
  return <div className="flex  items-center justify-center h-[350px]"><Jelly size={80}  color='#ff4501' /></div>
     return (
-      <div className="mt-7 max-w-5xl mx-auto p-4 pb-10">
+      <div className="mt-7 max-w-5xl mx-auto p-4 pb-10 ">
+        <div className=" border border-gray-300 shadow-sm hover:border-gray-600 rounded-md">
         <PostArticle {...post}  commentNum={comments.length} />
-        {post&&<div className="border border-gray-300 border-t-0 p-8 pb-0 -mt-2 bg-white pl-20 rounded-b-md">
+        {post&&<div className="border  border-t-0 p-8 pb-0 -mt-2 bg-white pl-20 rounded-b-md ">
 
          <p className="text-gray-700 font-semibold text-lg">Comment as <span className="text-red-500">{user?.name}</span></p>
          <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col ">
@@ -132,6 +137,8 @@ catch(err){
 
          </div>
         </div>}
+        </div>
+      
       </div>
     );
 };
